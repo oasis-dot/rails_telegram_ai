@@ -11,14 +11,19 @@ class TelegramMessageProcessorJob < ApplicationJob
     token = ENV["TELEGRAM_BOT_TOKEN"]
     bot_api = Telegram::Bot::Api.new(token)
 
-    response_text = case text
-    when "/start"
-                      "Hello from a Sidekiq Job, #{first_name}!"
-    when "/stop"
-                      "Bye from a Sidekiq Job, #{first_name}!"
-    else
-                      "I received your message: '#{text}', but I'm just a simple job."
-    end
+    response_text =
+      case text
+      when "/start"
+        "Hello from a Sidekiq Job, #{first_name}!"
+      when "/stop"
+        "Bye from a Sidekiq Job, #{first_name}!"
+      else
+        if text.start_with?("/ask")
+          OpenaiProcessorJob.perform_now(text)
+        else
+        "I received your message: '#{text}', but I'm just a simple job."
+        end
+      end
 
     bot_api.send_message(chat_id: chat_id, text: response_text)
   end
