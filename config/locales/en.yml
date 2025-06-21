@@ -55,7 +55,7 @@ en:
     command_stop: "Stop the conversation"
     command_help: "Show help"
     command_ask: "Ask the question"
-    command_weather: "Got weather for city"
+    command_weather: "Get weather for city"
   weather:
     not_available: "🌧️ Weather data not available."
     current: "🌍 Current weather in %{city}:"
