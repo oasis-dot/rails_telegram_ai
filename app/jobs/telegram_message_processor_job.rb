@@ -60,8 +60,8 @@ class TelegramMessageProcessorJob < ApplicationJob
 
   def process_ask_command(text, first_name)
     OpenaiProcessorJob
-      .perform_now(message_data: text.delete_prefix(ASK_MESSAGE_PREFIX).strip)
-      .concat(FOOTER % { first_name: first_name })
+      .perform_now(message_data: text.delete_prefix(ASK_MESSAGE_PREFIX).strip) +
+      (FOOTER % { first_name: first_name })
   end
 
   def process_weather_command(text, chat_id, bot_api)
