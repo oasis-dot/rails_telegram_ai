@@ -44,3 +44,7 @@ gem "dotenv"
 gem "telegram-bot-ruby", "~> 2.1"
 gem "sidekiq"
 gem "ruby-openai"
+gem "open-weather-ruby-client"
+
+gem "pry-rails"
+gem "pry-remote"

@@ -24,7 +24,7 @@ class OpenaiProcessorJob < ApplicationJob
     response = client.chat(
       parameters: {
         model: MODEL,
-        messages: [ { role: ROLE, content: message_data } ], # Required.
+        messages: [ { role: ROLE, content: message_data } ],
         temperature: 0.7
       }
     )

@@ -29,22 +29,35 @@
 
 en:
   telegram_message_processor:
-    footer: "\n\nHow about this, %{first_name}?"
-    start: "Hello, %{first_name}!"
-    stop: "Till next time, %{first_name}!"
+    footer: "\n\nHow about this, %{first_name}? 😃"
+    start: "👋 Hello, %{first_name}! Welcome to the AI Assistant Bot!"
+    stop: "👋 Till next time, %{first_name}! Have a great day! 🌈"
     help: |-
-      🤖 Welcome to the AI Assistant Bot!
+      🤖 *Welcome to the AI Assistant Bot!*
 
       Here’s what you can do:
-      - Type "/ask {your question}" to get an answer from the AI. For example: "/ask What is the capital of France?"
-      - Use /start to begin chatting with the bot.
-      - Use /stop to end the conversation.
-      - If you send a message the bot doesn’t understand, it will let you know and suggest using /help.
+      - ✍️ Type `/ask your question` to get an answer from the AI. For example: `/ask What is the capital of France?`
+      - 🌦️ Use `/weather city` to get the current weather for any city. After entering the command, you’ll be asked to choose the units: Celsius, Fahrenheit, or Kelvin.
+      - 🚀 Use `/start` to begin chatting with the bot.
+      - 🛑 Use `/stop` to end the conversation.
+      - ❓ If you send a message the bot doesn’t understand, it will let you know and suggest using `/help`.
 
       The bot will always answer in English and tries to be as helpful as possible. If it doesn’t know the answer or doesn’t understand your question, it will tell you.
 
-      Enjoy chatting!
-    unknown: "I got: '%{text}', but I don't know what to do with that. Run /help to get additional information."
+      🎉 *Enjoy chatting!*
+    choose_units: "🌦️ Please choose the units for the weather:"
+    celsius: "Celsius (°C) ❄️"
+    fahrenheit: "Fahrenheit (°F) 🔥"
+    kelvin: "Kelvin (K) 🧪"
+    city_missing: "⚠️ Sorry, I couldn't find the city you requested. Please try again with /weather <city>."
+    unknown: "🤔 I got: '%{text}', but I don't know what to do with that. Run /help to get additional information."
+  weather:
+    not_available: "🌧️ Weather data not available."
+    current: "🌍 Current weather in %{city}:"
+    temperature: "🌡️ Temperature: %{temperature}%{unit}"
+    feels_like: "🤗 Feels like: %{feels_like}%{unit}"
+    description: "📝 Description: %{description}"
+    could_not_retrieve: "⚠️ Could not retrieve weather information for the specified city."
   openai_processor:
     content_before: |-
       Answer without formatting.
