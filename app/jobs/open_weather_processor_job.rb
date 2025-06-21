@@ -35,7 +35,7 @@ class OpenWeatherProcessorJob < ApplicationJob
         I18n.t("weather.description", description: description.capitalize)
       ].join("\n")
     else
-      I18n.t("telegram_message_processor.weather.could_not_retrieve")
+      I18n.t("weather.could_not_retrieve")
     end
   end
 end
