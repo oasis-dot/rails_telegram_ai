@@ -1,6 +1,9 @@
 require "telegram/bot"
 
 class TelegramMessageProcessorJob < ApplicationJob
+  FOOTER = I18n.t("telegram_message_processor.footer")
+  MESSAGE_PREFIX = "/ask"
+
   queue_as :default
 
   def perform(message_data)
@@ -14,17 +17,21 @@ class TelegramMessageProcessorJob < ApplicationJob
     response_text =
       case text
       when "/start"
-        "Hello from a Sidekiq Job, #{first_name}!"
+        I18n.t("telegram_message_processor.start", first_name: first_name)
       when "/stop"
-        "Bye from a Sidekiq Job, #{first_name}!"
+        I18n.t("telegram_message_processor.stop", first_name: first_name)
+      when "/help"
+        I18n.t("telegram_message_processor.help", first_name: first_name)
       else
         if text.start_with?("/ask")
-          OpenaiProcessorJob.perform_now(text)
+          OpenaiProcessorJob
+            .perform_now(message_data: text.delete_prefix(MESSAGE_PREFIX).strip)
+            .concat(FOOTER % { first_name: first_name })
         else
-        "I received your message: '#{text}', but I'm just a simple job."
+          I18n.t("telegram_message_processor.unknown", text: text)
         end
       end
 
-    bot_api.send_message(chat_id: chat_id, text: response_text)
+    bot_api.send_message(chat_id: chat_id, text: response_text, parse_mode: "HTML")
   end
 end
