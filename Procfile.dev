@@ -1,0 +1,3 @@
+web: bin/rails server
+worker: bundle exec sidekiq
+bot: bundle exec rails bot:start

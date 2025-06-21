@@ -40,4 +40,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
-
+gem "dotenv"
+gem "telegram-bot-ruby", "~> 2.1"
+gem "sidekiq"
+gem "ruby-openai"
