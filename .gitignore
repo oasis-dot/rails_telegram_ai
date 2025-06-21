@@ -34,3 +34,4 @@
 
 # Ignore api keys and secrets.
 .env
+coverage
