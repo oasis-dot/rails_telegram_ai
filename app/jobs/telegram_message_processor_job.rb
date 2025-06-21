@@ -20,14 +20,14 @@ class TelegramMessageProcessorJob < ApplicationJob
     token = ENV["TELEGRAM_BOT_TOKEN"]
     bot_api = Telegram::Bot::Api.new(token)
     bot_api.set_my_commands(
-     commands: [
-       { command: "start", description: "Start the bot" },
-       { command: "stop", description: "Stop the conversation" },
-       { command: "help", description: "Show help" },
-       { command: "ask", description: "Ask a question" },
-       { command: "weather", description: "Get weather for a city" }
-     ]
-   )
+      commands: [
+        { command: "start", description: I18n.t("telegram_message_processor.command_start") },
+        { command: "stop", description: I18n.t("telegram_message_processor.command_stop") },
+        { command: "help", description: I18n.t("telegram_message_processor.command_help") },
+        { command: "ask", description: I18n.t("telegram_message_processor.command_ask") },
+        { command: "weather", description: I18n.t("telegram_message_processor.command_weather") }
+      ]
+    )
 
     response_text =
       case text

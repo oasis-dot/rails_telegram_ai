@@ -51,6 +51,11 @@ en:
     kelvin: "Kelvin (K) 🧪"
     city_missing: "⚠️ Sorry, I couldn't find the city you requested. Please try again with /weather <city>."
     unknown: "🤔 I got: '%{text}', but I don't know what to do with that. Run /help to get additional information."
+    command_start: "Start the bot"
+    command_stop: "Stop the conversation"
+    command_help: "Show help"
+    command_ask: "Ask the question"
+    command_weather: "Got weather for city"
   weather:
     not_available: "🌧️ Weather data not available."
     current: "🌍 Current weather in %{city}:"
