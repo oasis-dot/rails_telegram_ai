@@ -2,7 +2,6 @@ require "telegram/bot"
 
 class TelegramMessageProcessorJob < ApplicationJob
   FOOTER = I18n.t("telegram_message_processor.footer")
-  ASK_MESSAGE_PREFIX = "/ask".freeze
   WEATHER_MESSAGE_PREFIX = "/weather".freeze
   WEATHER_UNITS = [
     I18n.t("telegram_message_processor.celsius"),
@@ -24,7 +23,6 @@ class TelegramMessageProcessorJob < ApplicationJob
         { command: "start", description: I18n.t("telegram_message_processor.command_start") },
         { command: "stop", description: I18n.t("telegram_message_processor.command_stop") },
         { command: "help", description: I18n.t("telegram_message_processor.command_help") },
-        { command: "ask", description: I18n.t("telegram_message_processor.command_ask") },
         { command: "weather", description: I18n.t("telegram_message_processor.command_weather") }
       ]
     )

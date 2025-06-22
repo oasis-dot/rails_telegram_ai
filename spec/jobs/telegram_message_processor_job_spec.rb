@@ -22,16 +22,54 @@ RSpec.describe TelegramMessageProcessorJob, type: :job do
         allow(OpenaiProcessorJob).to receive(:perform_now).and_return("Response")
       end
 
-      it { is_expected.to eq("Response\n\nHow about this, User? 😃") }
+      it { is_expected.to eq("Response\n\nHow about this, My humanoid? 😃") }
     end
 
     describe "#process_weather_command" do
-      let(:location) { "New York" }
+      context "when command is /weather" do
+        subject { described_class.new.send(:process_weather_command, "/weather", chat_id, bot_api) }
 
-      subject { described_class.new.send(:process_weather_command, "/weather New York", chat_id, bot_api) }
+        it "prompts for a city input" do
+          expect(bot_api).to receive(:send_message).with(
+            chat_id: chat_id,
+            text: I18n.t("telegram_message_processor.ask_city")
+          )
 
-      it "sends a message with the weather information" do
-        expect(bot_api).to receive(:send_message).once
+          subject
+        end
+      end
+
+      context "when command is /weather with a city" do
+        subject { described_class.new.send(:process_weather_command, "New York", chat_id, bot_api) }
+
+        it "sends a message with the weather information" do
+          expect(bot_api).to receive(:send_message).once
+
+          subject
+        end
+      end
+    end
+
+    describe "#process_city_input" do
+      let(:city) { "New York" }
+
+      subject { described_class.new.send(:process_city_input, city, chat_id, bot_api) }
+
+      before do
+        allow(Rails.cache).to receive(:write).with("weather_city_#{chat_id}", city, expires_in: 5.minutes)
+        allow(Rails.cache).to receive(:delete).with("awaiting_city_#{chat_id}")
+        allow(OpenWeatherProcessorJob).to receive(:perform_now).and_return("Weather data")
+      end
+
+      it "writes the city to cache and deletes awaiting city cache" do
+        expect(Rails.cache).to receive(:write).with("weather_city_#{chat_id}", city, expires_in: 5.minutes)
+        expect(Rails.cache).to receive(:delete).with("awaiting_city_#{chat_id}")
+
+        subject
+      end
+
+      it "sends a message with the weather data" do
+        expect(bot_api).to receive(:send_message)
 
         subject
       end
@@ -86,16 +124,8 @@ RSpec.describe TelegramMessageProcessorJob, type: :job do
     end
 
     describe "#process_custom_commands" do
-      context "when command is /ask" do
-        let(:text) { "/ask How are you?" }
-
-        subject { described_class.new.send(:process_custom_commands, text, chat_id, first_name, bot_api) }
-
-        it { is_expected.to include("How about this, User? 😃") }
-      end
-
       context "when command is /weather" do
-        let(:text) { "/weather New York" }
+        let(:text) { "/weather" }
 
         subject { described_class.new.send(:process_custom_commands, text, chat_id, first_name, bot_api) }
 
@@ -110,12 +140,20 @@ RSpec.describe TelegramMessageProcessorJob, type: :job do
         it { is_expected.to be_nil }
       end
 
-      context "when command is unknown" do
-        let(:text) { "/unknown_command" }
+      context "when commnmd is with awaiting city" do
+        let(:text) { "New York" }
 
         subject { described_class.new.send(:process_custom_commands, text, chat_id, first_name, bot_api) }
 
-        it { is_expected.to eq(I18n.t("telegram_message_processor.unknown", text: text)) }
+        before do
+          allow(Rails.cache).to receive(:read).with("awaiting_city_#{chat_id}").and_return(true)
+        end
+
+        it "processes the city input" do
+          expect(bot_api).to receive(:send_message)
+
+          subject
+        end
       end
     end
 
@@ -182,7 +220,7 @@ RSpec.describe TelegramMessageProcessorJob, type: :job do
           expect(bot_api).to receive(:send_message).with(
             chat_id: chat_id,
             parse_mode: "HTML",
-            text: "Response\n\nHow about this, User? 😃"
+            text: "Response\n\nHow about this, My humanoid? 😃"
           )
 
           subject
