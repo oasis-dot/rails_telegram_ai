@@ -15,7 +15,7 @@ class OpenWeatherProcessorJob < ApplicationJob
 
     city = data.name
     temperature = data.main.temp
-    feals_like = data.main.feels_like
+    feels_like = data.main.feels_like
     description = data.weather.first.description
     temperature_unit =
       case data.units
@@ -27,7 +27,7 @@ class OpenWeatherProcessorJob < ApplicationJob
         "K"
       end
 
-    if city.present? && temperature.present? && description.present? && feals_like.present?
+    if city.present? && temperature.present? && description.present? && feels_like.present?
       [
         I18n.t("weather.current", city: city),
         I18n.t("weather.temperature", temperature: temperature, unit: temperature_unit),
