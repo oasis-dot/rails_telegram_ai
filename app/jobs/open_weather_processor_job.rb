@@ -31,7 +31,7 @@ class OpenWeatherProcessorJob < ApplicationJob
       [
         I18n.t("weather.current", city: city),
         I18n.t("weather.temperature", temperature: temperature, unit: temperature_unit),
-        I18n.t("weather.feels_like", feels_like: feals_like, unit: temperature_unit),
+        I18n.t("weather.feels_like", feels_like: feels_like, unit: temperature_unit),
         I18n.t("weather.description", description: description.capitalize)
       ].join("\n")
     else

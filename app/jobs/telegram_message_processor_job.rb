@@ -47,27 +47,56 @@ class TelegramMessageProcessorJob < ApplicationJob
   private
 
   def process_custom_commands(text, chat_id, first_name, bot_api)
-    if text.start_with?(ASK_MESSAGE_PREFIX)
-      process_ask_command(text, first_name)
-    elsif text.start_with?(WEATHER_MESSAGE_PREFIX)
+    if text.start_with?(WEATHER_MESSAGE_PREFIX)
       process_weather_command(text, chat_id, bot_api)
+    elsif Rails.cache.read("awaiting_city_#{chat_id}")
+      process_city_input(text, chat_id, bot_api)
     elsif WEATHER_UNITS.include?(text)
       process_weather_unit_selection(text, chat_id, bot_api)
     else
-      I18n.t("telegram_message_processor.unknown", text: text)
+      process_ask_command(text, first_name)
     end
   end
 
   def process_ask_command(text, first_name)
-    OpenaiProcessorJob
-      .perform_now(message_data: text.delete_prefix(ASK_MESSAGE_PREFIX).strip) +
-      (FOOTER % { first_name: first_name })
+    OpenaiProcessorJob.perform_now(message_data: text.strip) + FOOTER
   end
 
   def process_weather_command(text, chat_id, bot_api)
-    city = text.delete_prefix(WEATHER_MESSAGE_PREFIX).strip
+    if text.strip == WEATHER_MESSAGE_PREFIX
+      Rails.cache.write("awaiting_city_#{chat_id}", true, expires_in: 5.minutes)
+
+      bot_api.send_message(
+        chat_id: chat_id,
+        text: I18n.t("telegram_message_processor.ask_city")
+      )
+
+      return nil
+    end
+
+    city = text.strip
 
     Rails.cache.write("weather_city_#{chat_id}", city, expires_in: 5.minutes)
+    Rails.cache.delete("awaiting_city_#{chat_id}")
+
+    answers = Telegram::Bot::Types::ReplyKeyboardMarkup.new(
+      keyboard: WEATHER_UNITS.map { |unit| [ { text: unit } ] },
+      one_time_keyboard: true,
+      resize_keyboard: true
+    )
+
+    bot_api.send_message(
+      chat_id: chat_id,
+      text: I18n.t("telegram_message_processor.choose_units"),
+      reply_markup: answers
+    )
+
+    nil
+  end
+
+  def process_city_input(text, chat_id, bot_api)
+    Rails.cache.write("weather_city_#{chat_id}", text.strip, expires_in: 5.minutes)
+    Rails.cache.delete("awaiting_city_#{chat_id}")
 
     answers = Telegram::Bot::Types::ReplyKeyboardMarkup.new(
       keyboard: WEATHER_UNITS.map { |unit| [ { text: unit } ] },

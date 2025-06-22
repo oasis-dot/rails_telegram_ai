@@ -29,7 +29,7 @@
 
 en:
   telegram_message_processor:
-    footer: "\n\nHow about this, %{first_name}? 😃"
+    footer: "\n\nHow about this, My humanoid? 😃"
     start: "👋 Hello, %{first_name}! Welcome to the AI Assistant Bot!"
     stop: "👋 Till next time, %{first_name}! Have a great day! 🌈"
     help: |-
@@ -46,6 +46,7 @@ en:
 
       🎉 *Enjoy chatting!*
     choose_units: "🌦️ Please choose the units for the weather:"
+    ask_city: "Please enter your city:"
     celsius: "Celsius (°C) ❄️"
     fahrenheit: "Fahrenheit (°F) 🔥"
     kelvin: "Kelvin (K) 🧪"
@@ -67,8 +68,6 @@ en:
     content_before: |-
       Answer without formatting.
       Answer only in english.
-      If you don't know the answer, just say "I don't know".
-      If you don't understand the question, just say "I don't understand".
       If the question is not clear, ask for clarification.
       You are a helpful AI assistant for telegram bot.
 
