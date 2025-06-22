@@ -36,11 +36,10 @@ en:
       🤖 *Welcome to the AI Assistant Bot!*
 
       Here’s what you can do:
-      - ✍️ Type `/ask your question` to get an answer from the AI. For example: `/ask What is the capital of France?`
-      - 🌦️ Use `/weather city` to get the current weather for any city. After entering the command, you’ll be asked to choose the units: Celsius, Fahrenheit, or Kelvin.
+      - ✍️ Type `your question` to get an answer from the AI. For example: `What is the capital of France?`
+      - 🌦️ Type `/weather` to get the current weather for any city. The bot will ask for your city, then ask you to choose the units: Celsius, Fahrenheit, or Kelvin.
       - 🚀 Use `/start` to begin chatting with the bot.
       - 🛑 Use `/stop` to end the conversation.
-      - ❓ If you send a message the bot doesn’t understand, it will let you know and suggest using `/help`.
 
       The bot will always answer in English and tries to be as helpful as possible. If it doesn’t know the answer or doesn’t understand your question, it will tell you.
 
