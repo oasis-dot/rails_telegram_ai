@@ -28,4 +28,47 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  telegram_message_processor:
+    footer: "\n\nHow about this, My humanoid? 😃"
+    start: "👋 Hello, %{first_name}! Welcome to the AI Assistant Bot!"
+    stop: "👋 Till next time, %{first_name}! Have a great day! 🌈"
+    help: |-
+      🤖 *Welcome to the AI Assistant Bot!*
+
+      Here’s what you can do:
+      - ✍️ Type `your question` to get an answer from the AI. For example: `What is the capital of France?`
+      - 🌦️ Type `/weather` to get the current weather for any city. The bot will ask for your city, then ask you to choose the units: Celsius, Fahrenheit, or Kelvin.
+      - 🚀 Use `/start` to begin chatting with the bot.
+      - 🛑 Use `/stop` to end the conversation.
+
+      The bot will always answer in English and tries to be as helpful as possible. If it doesn’t know the answer or doesn’t understand your question, it will tell you.
+
+      🎉 *Enjoy chatting!*
+    choose_units: "🌦️ Please choose the units for the weather:"
+    ask_city: "Please enter your city:"
+    celsius: "Celsius (°C) ❄️"
+    fahrenheit: "Fahrenheit (°F) 🔥"
+    kelvin: "Kelvin (K) 🧪"
+    city_missing: "⚠️ Sorry, I couldn't find the city you requested. Please try again with /weather <city>."
+    unknown: "🤔 I got: '%{text}', but I don't know what to do with that. Run /help to get additional information."
+    command_start: "Start the bot"
+    command_stop: "Stop the conversation"
+    command_help: "Show help"
+    command_ask: "Ask the question"
+    command_weather: "Get weather for city"
+  weather:
+    not_available: "🌧️ Weather data not available."
+    current: "🌍 Current weather in %{city}:"
+    temperature: "🌡️ Temperature: %{temperature}%{unit}"
+    feels_like: "🤗 Feels like: %{feels_like}%{unit}"
+    description: "📝 Description: %{description}"
+    could_not_retrieve: "⚠️ Could not retrieve weather information for the specified city."
+  openai_processor:
+    content_before: |-
+      Answer without formatting.
+      Answer only in english.
+      If the question is not clear, ask for clarification.
+      You are a helpful AI assistant for telegram bot.
+
+      Question, that you need to answer:
+      %{message_data}

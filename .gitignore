@@ -31,3 +31,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore api keys and secrets.
+.env
+coverage
+.rvmrc

@@ -36,8 +36,17 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
+  gem "rspec-rails", "~> 7.0.0"
+  gem "simplecov", require: false
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
 
+gem "dotenv"
+gem "telegram-bot-ruby", "~> 2.1"
+gem "sidekiq"
+gem "ruby-openai"
+gem "open-weather-ruby-client"
 
+gem "pry-rails"
+gem "pry-remote"
